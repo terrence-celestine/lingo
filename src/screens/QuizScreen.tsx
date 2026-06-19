@@ -4,6 +4,7 @@ import { X, Volume2, ArrowRight, CheckCircle, XCircle } from "lucide-react";
 import TopNav from "../components/TopNav";
 import { useUserStats } from "../context/UserStateContext";
 import type { Question, LeaderboardEntry } from "../types";
+import Skeleton from "react-loading-skeleton";
 
 const HEARTS_MAX = 3;
 
@@ -120,8 +121,35 @@ export default function QuizScreen() {
     return (
       <div className="min-h-screen bg-[#F7F8FC]">
         <TopNav />
-        <div className="flex items-center justify-center h-64 text-sm text-gray-400">
-          Loading...
+        <div className="max-w-5xl mx-auto px-6 py-8 flex gap-6">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-8">
+              <Skeleton circle width={28} height={28} />
+              <Skeleton height={8} className="flex-1" />
+              <Skeleton width={60} height={16} />
+            </div>
+            <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center mb-5">
+              <Skeleton width={120} height={12} className="mx-auto mb-3" />
+              <Skeleton width={280} height={40} className="mx-auto mb-2" />
+              <Skeleton width={80} height={12} className="mx-auto mb-4" />
+              <Skeleton
+                width={80}
+                height={30}
+                className="mx-auto"
+                borderRadius={99}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} height={48} borderRadius={12} />
+              ))}
+            </div>
+          </div>
+          <div className="w-52 flex-shrink-0 flex flex-col gap-5">
+            <Skeleton height={160} borderRadius={16} />
+            <Skeleton height={80} borderRadius={16} />
+            <Skeleton height={180} borderRadius={16} />
+          </div>
         </div>
       </div>
     );

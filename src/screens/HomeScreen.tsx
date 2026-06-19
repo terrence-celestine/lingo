@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BookOpen, Coffee, ArrowRight, Lock, CheckCircle } from "lucide-react";
 import TopNav from "../components/TopNav";
 import { useUserStats } from "../context/UserStateContext";
+import Skeleton from "react-loading-skeleton";
 import type { Lesson } from "../types";
 
 const CATEGORY_COLORS: Record<
@@ -58,7 +59,19 @@ export default function HomeScreen() {
         </div>
 
         {loading ? (
-          <div className="text-sm text-gray-400">Loading lessons...</div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-2xl border border-gray-100 p-5"
+              >
+                <Skeleton circle width={40} height={40} className="mb-4" />
+                <Skeleton width={60} height={12} className="mb-1" />
+                <Skeleton width={100} height={14} className="mb-1" />
+                <Skeleton count={2} height={12} />
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {lessons.map((lesson) => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import TopNav from "../components/TopNav";
 import { useUserStats } from "../context/UserStateContext";
 import type { LeaderboardEntry } from "../types";
+import Skeleton from "react-loading-skeleton";
 
 export default function LeaderboardScreen() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
@@ -52,7 +53,22 @@ export default function LeaderboardScreen() {
         </div>
 
         {loading ? (
-          <div className="text-sm text-gray-400">Loading...</div>
+          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-4 px-5 py-4 border-b border-gray-50 last:border-0"
+              >
+                <Skeleton circle width={28} height={28} />
+                <Skeleton circle width={40} height={40} />
+                <div className="flex-1">
+                  <Skeleton width={80} height={13} className="mb-1" />
+                  <Skeleton width={60} height={11} />
+                </div>
+                <Skeleton width={40} height={13} />
+              </div>
+            ))}
+          </div>
         ) : (
           <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
             {leaderboard.map((entry, i) => (
