@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { lessonQueries, leaderboardQueries } from "../lib/queries";
 import ErrorState from "../components/ErrorState";
 import PageTransition from "../components/PageTransition";
+import { playCorrect, playWrong } from "../lib/sounds";
 
 const HEARTS_MAX = 3;
 
@@ -49,9 +50,11 @@ export default function QuizScreen() {
     setSelected(index);
     if (index === q.correctIndex) {
       setCorrect((c) => c + 1);
+      playCorrect();
     } else {
       setHearts((h) => h - 1);
       setWrongQuestions((prev) => [...prev, q]);
+      playWrong();
     }
   }
 

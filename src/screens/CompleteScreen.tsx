@@ -1,10 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Star, Zap, RotateCcw, Home, BookOpen } from "lucide-react";
+import { Star, Zap, RotateCcw, Home, BookOpen, XCircle } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
 import type { Question } from "../types";
 import { useUserStats } from "../context/UserStateContext";
 import PageTransition from "../components/PageTransition";
+import { playComplete, playLevelUp } from "../lib/sounds";
 
 interface LocationState {
   sessionXp: number;
@@ -32,13 +33,21 @@ export default function CompleteScreen() {
   const xpProgress = (xpIntoCurrentLevel() / xpForNextLevel()) * 100;
 
   useEffect(() => {
-    confetti({
-      particleCount: 120,
-      spread: 80,
-      origin: { y: 0.6 },
-      colors: ["#5B8AF0", "#1D9E75", "#FAC775", "#F0997B", "#ED93B1"],
-    });
+    if (wrongQuestions.length === 0) {
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ["#5B8AF0", "#1D9E75", "#FAC775", "#F0997B", "#ED93B1"],
+      });
+      return;
+    }
     if (lessonId) completeLesson(Number(lessonId));
+    if (xpProgress >= 100) {
+      playLevelUp();
+    } else {
+      playComplete();
+    }
   }, []);
 
   return (
@@ -47,11 +56,17 @@ export default function CompleteScreen() {
         <div className="max-w-md mx-auto px-6 py-16 flex flex-col items-center text-center">
           {/* Trophy */}
           <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mb-6">
-            <Star size={36} className="text-amber-400" />
+            {wrongQuestions.length === 0 ? (
+              <Star size={36} className="text-amber-400" />
+            ) : (
+              <XCircle size={36} className="text-red-400" />
+            )}
           </div>
 
           <h1 className="text-2xl font-medium text-gray-900 mb-1">
-            Lesson complete!
+            {wrongQuestions.length === 0
+              ? "Lesson complete!"
+              : "Lesson failed!"}
           </h1>
           <p className="text-sm text-gray-400 mb-10">
             {stats.streak > 1
@@ -76,7 +91,7 @@ export default function CompleteScreen() {
               },
               {
                 label: "Streak",
-                value: `${stats.streak} 🔥`,
+                value: `${stats.streak}`,
                 color: "text-orange-500",
                 bg: "bg-orange-50",
               },
@@ -117,28 +132,32 @@ export default function CompleteScreen() {
           {/* Actions */}
           <div className="w-full flex flex-col gap-3">
             <button
-              onClick={() => navigate(`/quiz/${lessonId}`)}
-              className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+              onClick={() =>
+                lessonId ? navigate(`/quiz/${lessonId}`) : navigate("/")
+              }
+              className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded-xl transition-colors hover:bg-blue-600 cursor-pointer"
             >
               <RotateCcw size={15} /> Try again
             </button>
             <button
               onClick={() => navigate("/")}
-              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 hover:border-gray-200 text-gray-600 text-sm font-medium py-3 rounded-xl transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 hover:border-gray-200 text-gray-600 text-sm font-medium py-3 rounded-xl transition-colors hover:bg-gray-50 cursor-pointer"
             >
               <Home size={15} /> Back to lessons
             </button>
+            {/* Review button */}
+            {wrongQuestions.length > 0 && (
+              <button
+                onClick={() =>
+                  navigate("/review", { state: { wrongQuestions } })
+                }
+                className="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 hover:border-gray-200 text-gray-600 text-sm font-medium py-3 rounded-xl transition-colors hover:bg-gray-50 cursor-pointer"
+              >
+                <BookOpen size={15} /> Review {wrongQuestions.length} mistake
+                {wrongQuestions.length > 1 ? "s" : ""}
+              </button>
+            )}
           </div>
-          {/* Review button */}
-          {wrongQuestions.length > 0 && (
-            <button
-              onClick={() => navigate("/review", { state: { wrongQuestions } })}
-              className="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 hover:border-gray-200 text-gray-600 text-sm font-medium py-3 rounded-xl transition-colors"
-            >
-              <BookOpen size={15} /> Review {wrongQuestions.length} mistake
-              {wrongQuestions.length > 1 ? "s" : ""}
-            </button>
-          )}
         </div>
       </PageTransition>
     </>

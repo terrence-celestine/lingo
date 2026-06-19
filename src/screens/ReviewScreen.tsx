@@ -93,7 +93,9 @@ export default function ReviewScreen() {
           {/* Actions */}
           <div className="flex flex-col gap-3">
             <button
-              onClick={() => navigate(`/quiz/${lessonId}`)}
+              onClick={() =>
+                lessonId ? navigate(`/quiz/${lessonId}`) : navigate("/")
+              }
               className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded-xl transition-colors"
             >
               <RotateCcw size={15} /> Try again
