@@ -59,3 +59,11 @@ export function playComplete() {
   playTone(659, "sine", 0.4, 0.15, 0.05);
   playTone(784, "sine", 0.4, 0.15, 0.1);
 }
+
+export function playFailed() {
+  // Descending sad tone — low and slow
+  playTone(392, "sine", 0.2, 0.2); // G4
+  playTone(349, "sine", 0.2, 0.2, 0.18); // F4
+  playTone(311, "sine", 0.2, 0.2, 0.36); // Eb4
+  playTone(261, "sine", 0.5, 0.25, 0.54); // C4 — long low resolution
+}

@@ -13,7 +13,12 @@ import { useEffect } from "react";
 import type { Question } from "../types";
 import { useUserStats } from "../context/UserStateContext";
 import PageTransition from "../components/PageTransition";
-import { playComplete, playLevelUp, playWrong } from "../lib/sounds";
+import {
+  playComplete,
+  playFailed,
+  playLevelUp,
+  playWrong,
+} from "../lib/sounds";
 import { useQuery } from "@tanstack/react-query";
 import { lessonQueries } from "../lib/queries";
 
@@ -70,7 +75,7 @@ export default function CompleteScreen() {
     if (xpProgress >= 100) {
       playLevelUp();
     } else if (wrongQuestions.length > 0) {
-      playWrong();
+      playFailed();
     } else {
       playComplete();
     }
