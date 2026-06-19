@@ -45,13 +45,12 @@ export default function CompleteScreen() {
   const { data: lessons = [] } = useQuery(lessonQueries.all());
   const { completedLessons } = useUserStats();
 
+  const currentLesson = lessons.find((l) => l.id === Number(lessonId));
   const nextLesson = lessons.find(
-    (l) =>
-      l.order === lessons.find((l2) => l2.id === Number(lessonId))?.order + 1,
+    (l) => l.order === (currentLesson?.order ?? 0) + 1,
   );
-  const nextUnlocked = nextLesson
-    ? nextLesson.id && completedLessons.includes(Number(nextLesson.id))
-    : false;
+  const nextUnlocked =
+    !!nextLesson && completedLessons.includes(Number(lessonId));
 
   useEffect(() => {
     if (wrongQuestions.length === 0) {
