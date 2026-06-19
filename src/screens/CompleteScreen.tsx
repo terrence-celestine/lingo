@@ -49,8 +49,9 @@ export default function CompleteScreen() {
     (l) =>
       l.order === lessons.find((l2) => l2.id === Number(lessonId))?.order + 1,
   );
-  const nextUnlocked =
-    nextLesson && completedLessons.includes(Number(lessonId));
+  const nextUnlocked = nextLesson
+    ? nextLesson.id && completedLessons.includes(Number(nextLesson.id))
+    : false;
 
   useEffect(() => {
     if (wrongQuestions.length === 0) {
