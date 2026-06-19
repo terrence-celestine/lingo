@@ -20,6 +20,7 @@ export default function QuizScreen() {
   const [loading, setLoading] = useState(true);
   const [sessionXp, setSessionXp] = useState(0);
   const [correct, setCorrect] = useState(0);
+  const [wrongQuestions, setWrongQuestions] = useState<Question[]>([]);
 
   const q = questions[current];
   const progress = (current / questions.length) * 100;
@@ -33,6 +34,7 @@ export default function QuizScreen() {
       setCorrect((c) => c + 1);
     } else {
       setHearts((h) => h - 1);
+      setWrongQuestions((prev) => [...prev, q]);
     }
   }
 
@@ -53,6 +55,7 @@ export default function QuizScreen() {
           correct,
           total: questions.length,
           lessonId,
+          wrongQuestions,
         },
       });
       return;

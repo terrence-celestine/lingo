@@ -1,15 +1,17 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Star, Zap, RotateCcw, Home } from "lucide-react";
+import { Star, Zap, RotateCcw, Home, BookOpen } from "lucide-react";
 import TopNav from "../components/TopNav";
 import { useUserStats } from "../hooks/useUserStats";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
+import type { Question } from "../types";
 
 interface LocationState {
   sessionXp: number;
   correct: number;
   total: number;
   lessonId: string;
+  wrongQuestions: Question[];
 }
 
 export default function CompleteScreen() {
@@ -22,7 +24,9 @@ export default function CompleteScreen() {
     correct = 0,
     total = 0,
     lessonId,
+    wrongQuestions = [],
   } = (location.state as LocationState) ?? {};
+
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
   const xpProgress = (xpIntoCurrentLevel() / xpForNextLevel()) * 100;
 
@@ -122,6 +126,16 @@ export default function CompleteScreen() {
             <Home size={15} /> Back to lessons
           </button>
         </div>
+        {/* Review button */}
+        {wrongQuestions.length > 0 && (
+          <button
+            onClick={() => navigate("/review", { state: { wrongQuestions } })}
+            className="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 hover:border-gray-200 text-gray-600 text-sm font-medium py-3 rounded-xl transition-colors"
+          >
+            <BookOpen size={15} /> Review {wrongQuestions.length} mistake
+            {wrongQuestions.length > 1 ? "s" : ""}
+          </button>
+        )}
       </div>
     </div>
   );

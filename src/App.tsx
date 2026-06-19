@@ -4,11 +4,13 @@ import QuizScreen from "./screens/QuizScreen";
 import CompleteScreen from "./screens/CompleteScreen";
 import LeaderboardScreen from "./screens/LeaderboardScreen";
 import ProgressScreen from "./screens/ProgressScreen";
+import ReviewScreen from "./screens/ReviewScreen";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/review" element={<ReviewScreen />} />
         <Route path="/" element={<HomeScreen />} />
         <Route path="/quiz/:lessonId" element={<QuizScreen />} />
         <Route path="/complete" element={<CompleteScreen />} />
