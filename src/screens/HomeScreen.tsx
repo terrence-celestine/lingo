@@ -96,8 +96,12 @@ export default function HomeScreen() {
   } = useQuery(lessonQueries.all(language));
 
   const LANGUAGES = [
-    { code: "Spanish", flag: "🇪🇸", label: "Spanish" },
-    { code: "French", flag: "🇫🇷", label: "French" },
+    {
+      code: "Spanish",
+      flag: "https://flagcdn.com/w40/es.png",
+      label: "Spanish",
+    },
+    { code: "French", flag: "https://flagcdn.com/w40/fr.png", label: "French" },
   ];
 
   function getGreeting() {
@@ -129,13 +133,17 @@ export default function HomeScreen() {
                 key={lang.code}
                 onClick={() => updateLanguage(lang.code)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border-2
-        ${
-          language === lang.code
-            ? "bg-blue-50 border-blue-400 text-blue-700"
-            : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"
-        }`}
+                ${
+                  language === lang.code
+                    ? "bg-blue-50 border-blue-400 text-blue-700"
+                    : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"
+                }`}
               >
-                <span className="text-base">{lang.flag}</span>
+                <img
+                  src={lang.flag}
+                  alt={lang.label}
+                  className="w-5 h-3.5 rounded-sm object-cover"
+                />
                 {lang.label}
               </button>
             ))}
