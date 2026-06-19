@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { UserStats } from "../types";
 
 const STORAGE_KEY = "lingo_user_stats";
+const COMPLETED_KEY = "lingo_completed_lessons";
 
 const DEFAULT_STATS: UserStats = {
   xp: 0,
@@ -24,6 +25,11 @@ export function useUserStats() {
     return stored ? JSON.parse(stored) : DEFAULT_STATS;
   });
 
+  const [completedLessons, setCompletedLessons] = useState<number[]>(() => {
+    const stored = localStorage.getItem(COMPLETED_KEY);
+    return stored ? JSON.parse(stored) : [];
+  });
+
   function addXp(amount: number) {
     setStats((prev) => {
       const today = new Date().toDateString();
@@ -43,6 +49,24 @@ export function useUserStats() {
     });
   }
 
+  function completeLesson(lessonId: number) {
+    setCompletedLessons((prev) => {
+      if (prev.includes(lessonId)) return prev;
+      const updated = [...prev, lessonId];
+      localStorage.setItem(COMPLETED_KEY, JSON.stringify(updated));
+      return updated;
+    });
+  }
+
+  function isLessonUnlocked(
+    lessonOrder: number,
+    allLessons: { id: number; order: number }[],
+  ): boolean {
+    if (lessonOrder === 1) return true;
+    const prevLesson = allLessons.find((l) => l.order === lessonOrder - 1);
+    return prevLesson ? completedLessons.includes(prevLesson.id) : false;
+  }
+
   function xpIntoCurrentLevel(): number {
     return stats.xp - getXpForLevel(stats.level);
   }
@@ -51,5 +75,13 @@ export function useUserStats() {
     return 500;
   }
 
-  return { stats, addXp, xpIntoCurrentLevel, xpForNextLevel };
+  return {
+    stats,
+    addXp,
+    completeLesson,
+    completedLessons,
+    isLessonUnlocked,
+    xpIntoCurrentLevel,
+    xpForNextLevel,
+  };
 }

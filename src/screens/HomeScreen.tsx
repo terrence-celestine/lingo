@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Coffee, ArrowRight } from "lucide-react";
+import { BookOpen, Coffee, ArrowRight, Lock, CheckCircle } from "lucide-react";
 import TopNav from "../components/TopNav";
 import { useUserStats } from "../hooks/useUserStats";
 import type { Lesson } from "../types";
@@ -24,7 +24,7 @@ const CATEGORY_COLORS: Record<
 export default function HomeScreen() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
-  const { stats } = useUserStats();
+  const { stats, completedLessons, isLessonUnlocked } = useUserStats();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,16 +67,34 @@ export default function HomeScreen() {
                 text: "text-gray-700",
                 icon: <BookOpen size={18} className="text-gray-500" />,
               };
+              const unlocked = isLessonUnlocked(lesson.order, lessons);
+              const completed = completedLessons.includes(lesson.id);
+
               return (
                 <button
                   key={lesson.id}
-                  onClick={() => navigate(`/quiz/${lesson.id}`)}
-                  className="bg-white rounded-2xl border border-gray-100 p-5 text-left hover:border-blue-200 hover:shadow-sm transition-all group"
+                  onClick={() => unlocked && navigate(`/quiz/${lesson.id}`)}
+                  className={`bg-white rounded-2xl border p-5 text-left transition-all group
+                    ${
+                      unlocked
+                        ? "border-gray-100 hover:border-blue-200 hover:shadow-sm cursor-pointer"
+                        : "border-gray-100 opacity-60 cursor-not-allowed"
+                    }
+                    ${completed ? "border-teal-100 bg-teal-50/30" : ""}
+                  `}
                 >
-                  <div
-                    className={`w-10 h-10 rounded-xl ${color.bg} flex items-center justify-center mb-4`}
-                  >
-                    {color.icon}
+                  <div className="flex items-start justify-between mb-4">
+                    <div
+                      className={`w-10 h-10 rounded-xl ${color.bg} flex items-center justify-center`}
+                    >
+                      {color.icon}
+                    </div>
+                    {completed && (
+                      <CheckCircle size={16} className="text-teal-500 mt-1" />
+                    )}
+                    {!unlocked && (
+                      <Lock size={16} className="text-gray-300 mt-1" />
+                    )}
                   </div>
                   <div className={`text-xs font-medium mb-1 ${color.text}`}>
                     {lesson.category}
@@ -87,9 +105,21 @@ export default function HomeScreen() {
                   <div className="text-xs text-gray-400 leading-relaxed">
                     {lesson.description}
                   </div>
-                  <div className="mt-4 flex items-center gap-1 text-xs text-blue-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    Start lesson <ArrowRight size={12} />
-                  </div>
+                  {unlocked && !completed && (
+                    <div className="mt-4 flex items-center gap-1 text-xs text-blue-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                      Start lesson <ArrowRight size={12} />
+                    </div>
+                  )}
+                  {completed && (
+                    <div className="mt-4 flex items-center gap-1 text-xs text-teal-500 font-medium">
+                      Completed <CheckCircle size={12} />
+                    </div>
+                  )}
+                  {!unlocked && (
+                    <div className="mt-4 flex items-center gap-1 text-xs text-gray-300 font-medium">
+                      Complete previous lesson <Lock size={12} />
+                    </div>
+                  )}
                 </button>
               );
             })}

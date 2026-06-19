@@ -17,7 +17,8 @@ interface LocationState {
 export default function CompleteScreen() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { stats, xpIntoCurrentLevel, xpForNextLevel } = useUserStats();
+  const { stats, xpIntoCurrentLevel, xpForNextLevel, completeLesson } =
+    useUserStats();
 
   const {
     sessionXp = 0,
@@ -37,6 +38,7 @@ export default function CompleteScreen() {
       origin: { y: 0.6 },
       colors: ["#5B8AF0", "#1D9E75", "#FAC775", "#F0997B", "#ED93B1"],
     });
+    if (lessonId) completeLesson(Number(lessonId));
   }, []);
 
   return (
