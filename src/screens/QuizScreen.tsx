@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { lessonQueries, leaderboardQueries } from "../lib/queries";
 import ErrorState from "../components/ErrorState";
 import PageTransition from "../components/PageTransition";
-import { playCorrect, playWrong, playFailed } from "../lib/sounds";
+import { playCorrect, playWrong } from "../lib/sounds";
 
 const HEARTS_MAX = 3;
 
