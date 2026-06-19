@@ -188,10 +188,10 @@ Browser-native speech synthesis is free, requires no API key, and works offline.
 
 ## Roadmap
 
-- [ ] Keyboard shortcuts (1–4 to select, Enter to advance)
-- [ ] Wrong answers review after lesson complete
-- [ ] Lesson lock/unlock progression
-- [ ] Confetti on lesson complete
-- [ ] Settings page with progress reset
+- [x] Keyboard shortcuts (1–4 to select, Enter to advance)
+- [x] Wrong answers review after lesson complete
+- [x] Lesson lock/unlock progression
+- [x] Confetti on lesson complete
+- [x] Settings page with progress reset
 - [ ] Clerk auth + server-side XP sync
 - [ ] Additional languages (French, Japanese)
