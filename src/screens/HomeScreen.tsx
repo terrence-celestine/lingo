@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Coffee, ArrowRight, Lock, CheckCircle } from "lucide-react";
+import {
+  BookOpen,
+  Coffee,
+  ArrowRight,
+  Lock,
+  CheckCircle,
+  Plane,
+  Heart,
+  Leaf,
+  Dumbbell,
+  Briefcase,
+  Music,
+  Zap,
+} from "lucide-react";
 import { useUserStats } from "../context/UserStateContext";
 import Skeleton from "react-loading-skeleton";
 import type { Lesson } from "../types";
@@ -18,6 +31,41 @@ const CATEGORY_COLORS: Record<
     bg: "bg-teal-50",
     text: "text-teal-700",
     icon: <Coffee size={18} className="text-teal-600" />,
+  },
+  Travel: {
+    bg: "bg-purple-50",
+    text: "text-purple-700",
+    icon: <Plane size={18} className="text-purple-600" />,
+  },
+  Health: {
+    bg: "bg-red-50",
+    text: "text-red-700",
+    icon: <Heart size={18} className="text-red-500" />,
+  },
+  Nature: {
+    bg: "bg-green-50",
+    text: "text-green-700",
+    icon: <Leaf size={18} className="text-green-600" />,
+  },
+  Lifestyle: {
+    bg: "bg-orange-50",
+    text: "text-orange-700",
+    icon: <Dumbbell size={18} className="text-orange-500" />,
+  },
+  Work: {
+    bg: "bg-slate-50",
+    text: "text-slate-700",
+    icon: <Briefcase size={18} className="text-slate-500" />,
+  },
+  Culture: {
+    bg: "bg-pink-50",
+    text: "text-pink-700",
+    icon: <Music size={18} className="text-pink-500" />,
+  },
+  Advanced: {
+    bg: "bg-amber-50",
+    text: "text-amber-700",
+    icon: <Zap size={18} className="text-amber-500" />,
   },
 };
 

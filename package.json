@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "seed": "tsx src/lib/seed.ts"
+    "seed": "tsx src/lib/seed.ts",
+    "seed:more": "tsx src/lib/seed-more.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
