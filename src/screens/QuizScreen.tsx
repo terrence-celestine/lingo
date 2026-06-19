@@ -53,7 +53,6 @@ export default function QuizScreen() {
       setCorrect((c) => c + 1);
       playCorrect();
     } else {
-      setHearts((h) => h - 1);
       setWrongQuestions((prev) => [...prev, q]);
       playWrong();
     }
