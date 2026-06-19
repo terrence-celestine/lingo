@@ -91,6 +91,7 @@ export default function HomeScreen() {
     isError,
     refetch,
   } = useQuery(lessonQueries.all());
+
   const { completedLessons, isLessonUnlocked } = useUserStats();
   const navigate = useNavigate();
 
