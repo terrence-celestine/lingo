@@ -119,7 +119,7 @@ export default function QuizScreen() {
   if (loading)
     return (
       <>
-        <div className="max-w-5xl mx-auto px-6 py-8 flex gap-6">
+        <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-8 flex flex-col md:flex-row gap-6 pb-28 md:pb-8">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-8">
               <Skeleton circle width={28} height={28} />
@@ -186,11 +186,11 @@ export default function QuizScreen() {
           </div>
 
           {/* Question card */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center mb-5">
+          <div className="bg-white rounded-2xl border border-gray-100 p-5 md:p-8 text-center mb-5">
             <p className="text-xs uppercase tracking-widest text-gray-300 mb-3">
               Translate to English
             </p>
-            <p className="text-4xl font-medium text-gray-900 mb-2 tracking-tight">
+            <p className="text-2xl md:text-4xl font-medium text-gray-900 mb-2 tracking-tight">
               {q.prompt}
             </p>
             {q.hint && <p className="text-xs text-gray-300 mb-4">{q.hint}</p>}
@@ -203,7 +203,7 @@ export default function QuizScreen() {
           </div>
 
           {/* Options */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
             {q.options.map((opt, i) => (
               <button
                 key={i}
@@ -275,7 +275,7 @@ export default function QuizScreen() {
         </div>
 
         {/* Right panel */}
-        <div className="w-52 flex-shrink-0 flex flex-col gap-5">
+        <div className="hidden md:flex w-52 flex-shrink-0 flex-col gap-5">
           {/* Session stats */}
           <div className="bg-white rounded-2xl border border-gray-100 p-4">
             <p className="text-xs uppercase tracking-widest text-gray-300 mb-3">
