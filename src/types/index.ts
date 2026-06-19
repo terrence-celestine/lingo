@@ -27,4 +27,5 @@ export interface UserStats {
   streak: number;
   level: number;
   lastActiveDate: string | null;
+  displayName: string;
 }

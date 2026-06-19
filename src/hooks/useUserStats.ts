@@ -9,6 +9,7 @@ const DEFAULT_STATS: UserStats = {
   streak: 0,
   level: 1,
   lastActiveDate: null,
+  displayName: "TC",
 };
 
 function getLevel(xp: number): number {
@@ -75,6 +76,21 @@ export function useUserStats() {
     return 500;
   }
 
+  function updateDisplayName(name: string) {
+    setStats((prev) => {
+      const updated = { ...prev, displayName: name };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
+    });
+  }
+
+  function resetProgress() {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(COMPLETED_KEY);
+    setStats(DEFAULT_STATS);
+    setCompletedLessons([]);
+  }
+
   return {
     stats,
     addXp,
@@ -83,5 +99,7 @@ export function useUserStats() {
     isLessonUnlocked,
     xpIntoCurrentLevel,
     xpForNextLevel,
+    updateDisplayName,
+    resetProgress,
   };
 }
