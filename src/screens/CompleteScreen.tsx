@@ -135,7 +135,7 @@ export default function CompleteScreen() {
               onClick={() =>
                 lessonId ? navigate(`/quiz/${lessonId}`) : navigate("/")
               }
-              className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded-xl transition-colors hover:bg-blue-600 cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 bg-blue-500 text-white text-sm font-medium py-3 rounded-xl transition-colors hover:bg-blue-600 cursor-pointer"
             >
               <RotateCcw size={15} /> Try again
             </button>
