@@ -8,6 +8,7 @@ import {
   X,
   Check,
   Flame,
+  Snowflake,
 } from "lucide-react";
 import { useUserStats } from "../context/UserStateContext";
 
@@ -95,6 +96,10 @@ export default function TopNav() {
       </div>
 
       <div className="flex items-center gap-2 ml-auto">
+        <div className="flex items-center gap-1.5 bg-cyan-50 text-cyan-800 text-xs font-medium px-3 py-1.5 rounded-full">
+          {stats.streakFreeze ?? 1} <Snowflake size={11} />
+        </div>
+
         <div className="flex items-center gap-1.5 bg-orange-50 text-orange-800 text-xs font-medium px-3 py-1.5 rounded-full">
           {stats.streak} <Flame size={11} />
         </div>

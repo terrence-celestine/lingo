@@ -1,6 +1,6 @@
 import PageTransition from "../components/PageTransition";
 import { useUserStats } from "../context/UserStateContext";
-import { Zap, Flame, Heart, Star } from "lucide-react";
+import { Zap, Flame, Heart, Star, Snowflake } from "lucide-react";
 
 export default function ProgressScreen() {
   const { stats, xpIntoCurrentLevel, xpForNextLevel } = useUserStats();
@@ -41,6 +41,14 @@ export default function ProgressScreen() {
       icon: Heart,
       bg: "bg-red-50",
       text: "text-red-400",
+    },
+    {
+      label: "Streak freezes",
+      value: `${stats.streakFreeze ?? 1}`,
+      sub: "earn more by leveling up",
+      icon: Snowflake,
+      bg: "bg-cyan-50",
+      text: "text-cyan-500",
     },
   ];
 

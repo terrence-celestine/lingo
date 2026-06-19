@@ -30,4 +30,5 @@ export interface UserStats {
   lastActiveDate: string | null;
   displayName: string;
   avatar: string;
+  streakFreeze: number;
 }

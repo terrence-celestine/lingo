@@ -11,6 +11,7 @@ const DEFAULT_STATS: UserStats = {
   lastActiveDate: null,
   displayName: "TC",
   avatar: "🦊",
+  streakFreeze: 0,
 };
 
 function getLevel(xp: number): number {
@@ -53,14 +54,43 @@ export function UserStatsProvider({ children }: { children: ReactNode }) {
   function addXp(amount: number) {
     setStats((prev) => {
       const today = new Date().toDateString();
-      const isNewDay = prev.lastActiveDate !== today;
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      const twoDaysAgo = new Date(Date.now() - 172800000).toDateString();
+      const lastActive = prev.lastActiveDate;
+
+      const isNewDay = lastActive !== today;
+      const missedOneDay = lastActive === twoDaysAgo;
       const newXp = prev.xp + amount;
+      const newLevel = getLevel(newXp);
+      const leveledUp = newLevel > prev.level;
+
+      // award a freeze on level up
+      const freezeBonus = leveledUp ? 1 : 0;
+
+      let newStreak = prev.streak;
+      let newFreeze = (prev.streakFreeze ?? 1) + freezeBonus;
+
+      if (isNewDay) {
+        if (lastActive === yesterday || lastActive === null) {
+          // consecutive day
+          newStreak = prev.streak + 1;
+        } else if (missedOneDay && newFreeze > 0) {
+          // missed one day — auto consume freeze
+          newStreak = prev.streak;
+          newFreeze = newFreeze - 1;
+        } else {
+          // missed more than one day or no freeze
+          newStreak = 1;
+        }
+      }
+
       const updated = {
         ...prev,
         xp: newXp,
-        streak: isNewDay ? prev.streak + 1 : prev.streak,
-        level: getLevel(newXp),
+        streak: newStreak,
+        level: newLevel,
         lastActiveDate: today,
+        streakFreeze: newFreeze,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       return updated;
