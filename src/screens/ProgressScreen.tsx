@@ -1,5 +1,5 @@
 import TopNav from "../components/TopNav";
-import { useUserStats } from "../hooks/useUserStats";
+import { useUserStats } from "../context/UserStateContext";
 import { Zap, Flame, Heart, Star } from "lucide-react";
 
 export default function ProgressScreen() {
@@ -61,7 +61,7 @@ export default function ProgressScreen() {
 
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav stats={stats} />
+      <TopNav />
 
       <main className="max-w-xl mx-auto px-6 py-10">
         <div className="mb-8">

@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { CheckCircle, XCircle, Home, RotateCcw } from "lucide-react";
 import TopNav from "../components/TopNav";
-import { useUserStats } from "../hooks/useUserStats";
 import type { Question } from "../types";
 
 interface LocationState {
@@ -12,13 +11,13 @@ interface LocationState {
 export default function ReviewScreen() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { stats } = useUserStats();
+
   const { wrongQuestions = [], lessonId } =
     (location.state as LocationState) ?? {};
 
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav stats={stats} />
+      <TopNav />
 
       <main className="max-w-xl mx-auto px-6 py-10">
         <div className="mb-8">

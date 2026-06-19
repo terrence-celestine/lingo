@@ -1,17 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Zap, Trophy, TrendingUp, Languages, X, Check } from "lucide-react";
-import { useUserStats } from "../hooks/useUserStats";
-import type { UserStats } from "../types";
+import { useUserStats } from "../context/UserStateContext";
 
-interface Props {
-  stats: UserStats;
-}
-
-export default function TopNav({ stats }: Props) {
+export default function TopNav() {
   const location = useLocation();
-  const { updateDisplayName, resetProgress } = useUserStats();
   const [modalOpen, setModalOpen] = useState(false);
+  const { stats, updateDisplayName, resetProgress, updateAvatar } =
+    useUserStats();
   const [nameInput, setNameInput] = useState(stats.displayName);
   const [confirmReset, setConfirmReset] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -20,6 +16,21 @@ export default function TopNav({ stats }: Props) {
     { to: "/", label: "Learn", icon: Zap },
     { to: "/leaderboard", label: "Leaderboard", icon: Trophy },
     { to: "/progress", label: "Progress", icon: TrendingUp },
+  ];
+
+  const AVATARS = [
+    "🦊",
+    "🐼",
+    "🦁",
+    "🐸",
+    "🐧",
+    "🦄",
+    "🐙",
+    "🦋",
+    "🐺",
+    "🦅",
+    "🐬",
+    "🌟",
   ];
 
   useEffect(() => {
@@ -47,13 +58,6 @@ export default function TopNav({ stats }: Props) {
     setConfirmReset(false);
     setModalOpen(false);
   }
-
-  const initials = stats.displayName
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
 
   return (
     <nav className="bg-white border-b border-gray-100 px-6 h-13 flex items-center gap-6 relative">
@@ -96,9 +100,9 @@ export default function TopNav({ stats }: Props) {
             setNameInput(stats.displayName);
             setConfirmReset(false);
           }}
-          className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 text-xs font-medium flex items-center justify-center border-2 border-blue-200 hover:border-blue-400 transition-colors"
+          className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center border-2 border-blue-200 hover:border-blue-400 transition-colors text-base"
         >
-          {initials}
+          {stats.avatar}
         </button>
       </div>
 
@@ -118,7 +122,26 @@ export default function TopNav({ stats }: Props) {
               <X size={15} />
             </button>
           </div>
-
+          {/* Avatar picker */}
+          <div className="px-5 py-4 border-b border-gray-50">
+            <p className="text-xs text-gray-400 mb-3">Avatar</p>
+            <div className="grid grid-cols-6 gap-2">
+              {AVATARS.map((emoji) => (
+                <button
+                  key={emoji}
+                  onClick={() => updateAvatar(emoji)}
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-all
+          ${
+            stats.avatar === emoji
+              ? "bg-blue-100 border-2 border-blue-400 scale-110"
+              : "bg-gray-50 border-2 border-transparent hover:bg-gray-100"
+          }`}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+          </div>
           {/* Display name */}
           <div className="px-5 py-4 border-b border-gray-50">
             <p className="text-xs text-gray-400 mb-2">Display name</p>

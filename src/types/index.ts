@@ -28,4 +28,5 @@ export interface UserStats {
   level: number;
   lastActiveDate: string | null;
   displayName: string;
+  avatar: string;
 }

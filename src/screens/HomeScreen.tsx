@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, Coffee, ArrowRight, Lock, CheckCircle } from "lucide-react";
 import TopNav from "../components/TopNav";
-import { useUserStats } from "../hooks/useUserStats";
+import { useUserStats } from "../context/UserStateContext";
 import type { Lesson } from "../types";
 
 const CATEGORY_COLORS: Record<
@@ -24,7 +24,7 @@ const CATEGORY_COLORS: Record<
 export default function HomeScreen() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
-  const { stats, completedLessons, isLessonUnlocked } = useUserStats();
+  const { completedLessons, isLessonUnlocked } = useUserStats();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav stats={stats} />
+      <TopNav />
 
       <main className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">

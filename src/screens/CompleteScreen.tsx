@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Star, Zap, RotateCcw, Home, BookOpen } from "lucide-react";
 import TopNav from "../components/TopNav";
-import { useUserStats } from "../hooks/useUserStats";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
 import type { Question } from "../types";
+import { useUserStats } from "../context/UserStateContext";
 
 interface LocationState {
   sessionXp: number;
@@ -43,7 +43,7 @@ export default function CompleteScreen() {
 
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav stats={stats} />
+      <TopNav />
 
       <div className="max-w-md mx-auto px-6 py-16 flex flex-col items-center text-center">
         {/* Trophy */}
