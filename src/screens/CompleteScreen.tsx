@@ -2,6 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Star, Zap, RotateCcw, Home } from "lucide-react";
 import TopNav from "../components/TopNav";
 import { useUserStats } from "../hooks/useUserStats";
+import confetti from "canvas-confetti";
+import { useEffect } from "react";
 
 interface LocationState {
   sessionXp: number;
@@ -23,6 +25,15 @@ export default function CompleteScreen() {
   } = (location.state as LocationState) ?? {};
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
   const xpProgress = (xpIntoCurrentLevel() / xpForNextLevel()) * 100;
+
+  useEffect(() => {
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      origin: { y: 0.6 },
+      colors: ["#5B8AF0", "#1D9E75", "#FAC775", "#F0997B", "#ED93B1"],
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
