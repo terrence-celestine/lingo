@@ -21,28 +21,6 @@ export default function QuizScreen() {
   const [sessionXp, setSessionXp] = useState(0);
   const [correct, setCorrect] = useState(0);
 
-  useEffect(() => {
-    Promise.all([
-      fetch(`/api/questions?lessonId=${lessonId}`).then((r) => r.json()),
-      fetch("/api/leaderboard").then((r) => r.json()),
-    ]).then(([qs, lb]) => {
-      const shuffled = [...qs].sort(() => Math.random() - 0.5);
-      setQuestions(shuffled);
-      setLeaderboard(lb);
-      setLoading(false);
-    });
-  }, [lessonId]);
-
-  if (loading)
-    return (
-      <div className="min-h-screen bg-[#F7F8FC]">
-        <TopNav stats={stats} />
-        <div className="flex items-center justify-center h-64 text-sm text-gray-400">
-          Loading...
-        </div>
-      </div>
-    );
-
   const q = questions[current];
   const progress = (current / questions.length) * 100;
   const isAnswered = selected !== null;
@@ -100,6 +78,50 @@ export default function QuizScreen() {
       return "border-orange-300 bg-orange-50 cursor-default";
     return "border-gray-100 bg-white opacity-40 cursor-default";
   }
+
+  useEffect(() => {
+    Promise.all([
+      fetch(`/api/questions?lessonId=${lessonId}`).then((r) => r.json()),
+      fetch("/api/leaderboard").then((r) => r.json()),
+    ]).then(([qs, lb]) => {
+      const shuffled = [...qs].sort(() => Math.random() - 0.5);
+      setQuestions(shuffled);
+      setLeaderboard(lb);
+      setLoading(false);
+    });
+  }, [lessonId]);
+
+  useEffect(() => {
+    if (!questions.length) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (["1", "2", "3", "4"].includes(e.key)) {
+        handleSelect(Number(e.key) - 1);
+      }
+      if (e.key === "Enter" && isAnswered) {
+        handleNext();
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [
+    questions.length,
+    isAnswered,
+    selected,
+    current,
+    hearts,
+    sessionXp,
+    correct,
+  ]);
+
+  if (loading)
+    return (
+      <div className="min-h-screen bg-[#F7F8FC]">
+        <TopNav stats={stats} />
+        <div className="flex items-center justify-center h-64 text-sm text-gray-400">
+          Loading...
+        </div>
+      </div>
+    );
 
   const heartsLeft = isAnswered && !isCorrect ? hearts - 1 : hearts;
 
