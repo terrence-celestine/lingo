@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Star, Zap, RotateCcw, Home, BookOpen } from "lucide-react";
-import TopNav from "../components/TopNav";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
 import type { Question } from "../types";
@@ -42,9 +41,7 @@ export default function CompleteScreen() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav />
-
+    <>
       <div className="max-w-md mx-auto px-6 py-16 flex flex-col items-center text-center">
         {/* Trophy */}
         <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mb-6">
@@ -139,6 +136,6 @@ export default function CompleteScreen() {
           </button>
         )}
       </div>
-    </div>
+    </>
   );
 }

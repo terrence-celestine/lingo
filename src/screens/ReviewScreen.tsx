@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { CheckCircle, XCircle, Home, RotateCcw } from "lucide-react";
-import TopNav from "../components/TopNav";
 import type { Question } from "../types";
 
 interface LocationState {
@@ -16,9 +15,7 @@ export default function ReviewScreen() {
     (location.state as LocationState) ?? {};
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav />
-
+    <>
       <main className="max-w-xl mx-auto px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium text-gray-900">
@@ -105,6 +102,6 @@ export default function ReviewScreen() {
           </button>
         </div>
       </main>
-    </div>
+    </>
   );
 }

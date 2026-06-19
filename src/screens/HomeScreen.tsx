@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, Coffee, ArrowRight, Lock, CheckCircle } from "lucide-react";
-import TopNav from "../components/TopNav";
 import { useUserStats } from "../context/UserStateContext";
 import Skeleton from "react-loading-skeleton";
 import type { Lesson } from "../types";
@@ -45,9 +44,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav />
-
+    <div>
       <main className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium text-gray-900">
@@ -87,35 +84,46 @@ export default function HomeScreen() {
                 <button
                   key={lesson.id}
                   onClick={() => unlocked && navigate(`/quiz/${lesson.id}`)}
-                  className={`bg-white rounded-2xl border p-5 text-left transition-all group
-                    ${
-                      unlocked
-                        ? "border-gray-100 hover:border-blue-200 hover:shadow-sm cursor-pointer"
-                        : "border-gray-100 opacity-60 cursor-not-allowed"
-                    }
-                    ${completed ? "border-teal-100 bg-teal-50/30" : ""}
-                  `}
+                  className={`rounded-2xl border p-5 text-left transition-all group
+                  ${
+                    completed
+                      ? "bg-teal-500 border-teal-400 cursor-pointer"
+                      : unlocked
+                        ? "bg-white border-gray-100 hover:border-blue-200 hover:shadow-sm cursor-pointer"
+                        : "bg-white border-gray-100 opacity-60 cursor-not-allowed"
+                  }`}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div
-                      className={`w-10 h-10 rounded-xl ${color.bg} flex items-center justify-center`}
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center
+                    ${completed ? "bg-teal-400" : color.bg}`}
                     >
-                      {color.icon}
+                      {completed ? (
+                        <CheckCircle size={18} className="text-white" />
+                      ) : (
+                        color.icon
+                      )}
                     </div>
                     {completed && (
-                      <CheckCircle size={16} className="text-teal-500 mt-1" />
+                      <CheckCircle size={16} className="text-teal-200 mt-1" />
                     )}
-                    {!unlocked && (
+                    {!unlocked && !completed && (
                       <Lock size={16} className="text-gray-300 mt-1" />
                     )}
                   </div>
-                  <div className={`text-xs font-medium mb-1 ${color.text}`}>
+                  <div
+                    className={`text-xs font-medium mb-1 ${completed ? "text-teal-100" : color.text}`}
+                  >
                     {lesson.category}
                   </div>
-                  <div className="text-sm font-medium text-gray-900 mb-1">
+                  <div
+                    className={`text-sm font-medium mb-1 ${completed ? "text-white" : "text-gray-900"}`}
+                  >
                     {lesson.title}
                   </div>
-                  <div className="text-xs text-gray-400 leading-relaxed">
+                  <div
+                    className={`text-xs leading-relaxed ${completed ? "text-teal-100" : "text-gray-400"}`}
+                  >
                     {lesson.description}
                   </div>
                   {unlocked && !completed && (
@@ -124,11 +132,11 @@ export default function HomeScreen() {
                     </div>
                   )}
                   {completed && (
-                    <div className="mt-4 flex items-center gap-1 text-xs text-teal-500 font-medium">
+                    <div className="mt-4 flex items-center gap-1 text-xs text-teal-100 font-medium">
                       Completed <CheckCircle size={12} />
                     </div>
                   )}
-                  {!unlocked && (
+                  {!unlocked && !completed && (
                     <div className="mt-4 flex items-center gap-1 text-xs text-gray-300 font-medium">
                       Complete previous lesson <Lock size={12} />
                     </div>

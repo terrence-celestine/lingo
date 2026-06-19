@@ -60,7 +60,7 @@ export default function TopNav() {
   }
 
   return (
-    <nav className="bg-white border-b border-gray-100 px-6 h-13 flex items-center gap-6 relative">
+    <nav className="hidden md:flex bg-white border-b border-gray-100 px-6 h-13 items-center gap-6 relative">
       <Link to="/" className="flex items-center gap-2 mr-4">
         <div className="w-7 h-7 bg-blue-500 rounded-lg flex items-center justify-center text-white">
           <Languages size={15} />

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import TopNav from "../components/TopNav";
 import { useUserStats } from "../context/UserStateContext";
 import type { LeaderboardEntry } from "../types";
 import Skeleton from "react-loading-skeleton";
@@ -29,9 +28,7 @@ export default function LeaderboardScreen() {
   const yourRank = leaderboard.filter((e) => e.xp > stats.xp).length + 1;
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav />
-
+    <>
       <main className="max-w-xl mx-auto px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium text-gray-900">Leaderboard</h1>
@@ -144,6 +141,6 @@ export default function LeaderboardScreen() {
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { X, Volume2, ArrowRight, CheckCircle, XCircle } from "lucide-react";
-import TopNav from "../components/TopNav";
 import { useUserStats } from "../context/UserStateContext";
 import type { Question, LeaderboardEntry } from "../types";
 import Skeleton from "react-loading-skeleton";
@@ -119,8 +118,7 @@ export default function QuizScreen() {
 
   if (loading)
     return (
-      <div className="min-h-screen bg-[#F7F8FC]">
-        <TopNav />
+      <>
         <div className="max-w-5xl mx-auto px-6 py-8 flex gap-6">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-8">
@@ -151,15 +149,13 @@ export default function QuizScreen() {
             <Skeleton height={180} borderRadius={16} />
           </div>
         </div>
-      </div>
+      </>
     );
 
   const heartsLeft = isAnswered && !isCorrect ? hearts - 1 : hearts;
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC]">
-      <TopNav />
-
+    <>
       <div className="max-w-5xl mx-auto px-6 py-8 flex gap-6">
         {/* Main quiz area */}
         <div className="flex-1">
@@ -371,6 +367,6 @@ export default function QuizScreen() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
