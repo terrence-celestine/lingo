@@ -1,11 +1,21 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Star, Zap, RotateCcw, Home, BookOpen, XCircle } from "lucide-react";
+import {
+  Star,
+  Zap,
+  RotateCcw,
+  Home,
+  BookOpen,
+  XCircle,
+  ArrowRight,
+} from "lucide-react";
 import confetti from "canvas-confetti";
 import { useEffect } from "react";
 import type { Question } from "../types";
 import { useUserStats } from "../context/UserStateContext";
 import PageTransition from "../components/PageTransition";
-import { playComplete, playLevelUp } from "../lib/sounds";
+import { playComplete, playLevelUp, playWrong } from "../lib/sounds";
+import { useQuery } from "@tanstack/react-query";
+import { lessonQueries } from "../lib/queries";
 
 interface LocationState {
   sessionXp: number;
@@ -32,6 +42,16 @@ export default function CompleteScreen() {
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
   const xpProgress = (xpIntoCurrentLevel() / xpForNextLevel()) * 100;
 
+  const { data: lessons = [] } = useQuery(lessonQueries.all());
+  const { completedLessons } = useUserStats();
+
+  const nextLesson = lessons.find(
+    (l) =>
+      l.order === lessons.find((l2) => l2.id === Number(lessonId))?.order + 1,
+  );
+  const nextUnlocked =
+    nextLesson && completedLessons.includes(Number(lessonId));
+
   useEffect(() => {
     if (wrongQuestions.length === 0) {
       confetti({
@@ -40,11 +60,12 @@ export default function CompleteScreen() {
         origin: { y: 0.6 },
         colors: ["#5B8AF0", "#1D9E75", "#FAC775", "#F0997B", "#ED93B1"],
       });
-      return;
+      if (lessonId) completeLesson(Number(lessonId));
     }
-    if (lessonId) completeLesson(Number(lessonId));
     if (xpProgress >= 100) {
       playLevelUp();
+    } else if (wrongQuestions.length > 0) {
+      playWrong();
     } else {
       playComplete();
     }
@@ -131,14 +152,24 @@ export default function CompleteScreen() {
 
           {/* Actions */}
           <div className="w-full flex flex-col gap-3">
-            <button
-              onClick={() =>
-                lessonId ? navigate(`/quiz/${lessonId}`) : navigate("/")
-              }
-              className="w-full flex items-center justify-center gap-2 bg-blue-500 text-white text-sm font-medium py-3 rounded-xl transition-colors hover:bg-blue-600 cursor-pointer"
-            >
-              <RotateCcw size={15} /> Try again
-            </button>
+            {/* Next lesson button */}
+            {nextUnlocked && nextLesson ? (
+              <button
+                onClick={() => navigate(`/quiz/${nextLesson.id}`)}
+                className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+              >
+                <ArrowRight size={15} /> Next lesson — {nextLesson.title}
+              </button>
+            ) : (
+              <button
+                onClick={() =>
+                  lessonId ? navigate(`/quiz/${lessonId}`) : navigate("/")
+                }
+                className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+              >
+                <RotateCcw size={15} /> Try again
+              </button>
+            )}
             <button
               onClick={() => navigate("/")}
               className="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 hover:border-gray-200 text-gray-600 text-sm font-medium py-3 rounded-xl transition-colors hover:bg-gray-50 cursor-pointer"
