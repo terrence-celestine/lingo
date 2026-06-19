@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { leaderboard } from "../src/lib/schema";
+import { leaderboard } from "../src/lib/schema.js";
 import { desc } from "drizzle-orm";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

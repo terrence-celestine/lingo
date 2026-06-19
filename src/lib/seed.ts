@@ -1,6 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { lessons, questions, leaderboard } from "./schema";
+import { lessons, questions, leaderboard } from "./schema.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
