@@ -5,6 +5,7 @@ export interface Lesson {
   category: string;
   order: number;
   difficulty: "Beginner" | "Intermediate" | "Advanced";
+  language: string;
 }
 
 export interface Question {

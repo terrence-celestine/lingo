@@ -28,8 +28,13 @@ interface LocationState {
 export default function CompleteScreen() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { stats, xpIntoCurrentLevel, xpForNextLevel, completeLesson } =
-    useUserStats();
+  const {
+    stats,
+    xpIntoCurrentLevel,
+    xpForNextLevel,
+    completeLesson,
+    language,
+  } = useUserStats();
 
   const {
     sessionXp = 0,
@@ -42,7 +47,7 @@ export default function CompleteScreen() {
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
   const xpProgress = (xpIntoCurrentLevel() / xpForNextLevel()) * 100;
 
-  const { data: lessons = [] } = useQuery(lessonQueries.all());
+  const { data: lessons = [] } = useQuery(lessonQueries.all(language));
   const { completedLessons } = useUserStats();
 
   const currentLesson = lessons.find((l) => l.id === Number(lessonId));

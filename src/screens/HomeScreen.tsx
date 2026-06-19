@@ -85,15 +85,20 @@ const DIFFICULTY_BADGE: Record<
 };
 
 export default function HomeScreen() {
+  const navigate = useNavigate();
+  const { completedLessons, isLessonUnlocked, language, updateLanguage } =
+    useUserStats();
   const {
     data: lessons = [],
     isLoading: loading,
     isError,
     refetch,
-  } = useQuery(lessonQueries.all());
+  } = useQuery(lessonQueries.all(language));
 
-  const { completedLessons, isLessonUnlocked } = useUserStats();
-  const navigate = useNavigate();
+  const LANGUAGES = [
+    { code: "Spanish", flag: "🇪🇸", label: "Spanish" },
+    { code: "French", flag: "🇫🇷", label: "French" },
+  ];
 
   function getGreeting() {
     const hour = new Date().getHours();
@@ -117,7 +122,24 @@ export default function HomeScreen() {
               Pick a lesson to continue your streak.
             </p>
           </div>
-
+          {/* Language selector */}
+          <div className="flex gap-2 mb-6">
+            {LANGUAGES.map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => updateLanguage(lang.code)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border-2
+        ${
+          language === lang.code
+            ? "bg-blue-50 border-blue-400 text-blue-700"
+            : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"
+        }`}
+              >
+                <span className="text-base">{lang.flag}</span>
+                {lang.label}
+              </button>
+            ))}
+          </div>
           {loading ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (

@@ -7,6 +7,7 @@ export const lessons = pgTable("lessons", {
   category: text("category").notNull(),
   order: integer("order").notNull(),
   difficulty: text("difficulty").notNull().default("Beginner"),
+  language: text("language").notNull().default("Spanish"),
 });
 
 export const questions = pgTable("questions", {

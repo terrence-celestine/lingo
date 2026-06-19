@@ -3,6 +3,8 @@ import type { UserStats } from "../types";
 
 const STORAGE_KEY = "lingo_user_stats";
 const COMPLETED_KEY = "lingo_completed_lessons";
+const LANGUAGE_KEY = "lingo_language";
+const DEFAULT_LANGUAGE = "Spanish";
 
 const DEFAULT_STATS: UserStats = {
   xp: 0,
@@ -36,11 +38,18 @@ interface UserStatsContextValue {
   ) => boolean;
   xpIntoCurrentLevel: () => number;
   xpForNextLevel: () => number;
+  language: string;
+  updateLanguage: (lang: string) => void;
 }
 
 const UserStatsContext = createContext<UserStatsContextValue | null>(null);
 
 export function UserStatsProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguage] = useState<string>(() => {
+    const stored = localStorage.getItem(LANGUAGE_KEY);
+    return stored ? stored : DEFAULT_LANGUAGE;
+  });
+
   const [stats, setStats] = useState<UserStats>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored ? { ...DEFAULT_STATS, ...JSON.parse(stored) } : DEFAULT_STATS;
@@ -50,6 +59,11 @@ export function UserStatsProvider({ children }: { children: ReactNode }) {
     const stored = localStorage.getItem(COMPLETED_KEY);
     return stored ? JSON.parse(stored) : [];
   });
+
+  function updateLanguage(lang: string) {
+    localStorage.setItem(LANGUAGE_KEY, lang);
+    setLanguage(lang);
+  }
 
   function addXp(amount: number) {
     setStats((prev) => {
@@ -159,6 +173,8 @@ export function UserStatsProvider({ children }: { children: ReactNode }) {
         isLessonUnlocked,
         xpIntoCurrentLevel,
         xpForNextLevel,
+        language,
+        updateLanguage,
       }}
     >
       {children}

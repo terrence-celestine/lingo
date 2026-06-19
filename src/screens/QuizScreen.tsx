@@ -23,7 +23,8 @@ const HEARTS_MAX = 3;
 export default function QuizScreen() {
   const { lessonId } = useParams();
   const navigate = useNavigate();
-  const { stats, addXp, xpIntoCurrentLevel, xpForNextLevel } = useUserStats();
+  const { stats, addXp, xpIntoCurrentLevel, xpForNextLevel, language } =
+    useUserStats();
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [hearts, setHearts] = useState(HEARTS_MAX);
@@ -88,7 +89,7 @@ export default function QuizScreen() {
 
   function speak() {
     const utterance = new SpeechSynthesisUtterance(q.prompt);
-    utterance.lang = "es-ES";
+    utterance.lang = language === "French" ? "fr-FR" : "es-ES";
     window.speechSynthesis.speak(utterance);
   }
 

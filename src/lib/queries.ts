@@ -1,10 +1,10 @@
 import type { Lesson, Question, LeaderboardEntry } from "../types";
 
 export const lessonQueries = {
-  all: () => ({
-    queryKey: ["lessons"],
+  all: (language: string) => ({
+    queryKey: ["lessons", language],
     queryFn: (): Promise<Lesson[]> =>
-      fetch("/api/lessons").then((r) => r.json()),
+      fetch(`/api/lessons?language=${language}`).then((r) => r.json()),
   }),
   questions: (lessonId: string) => ({
     queryKey: ["questions", lessonId],
