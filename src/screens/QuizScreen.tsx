@@ -10,8 +10,10 @@ import {
   Flame,
 } from "lucide-react";
 import { useUserStats } from "../context/UserStateContext";
-import type { Question, LeaderboardEntry } from "../types";
+import type { Question } from "../types";
 import Skeleton from "react-loading-skeleton";
+import { useQuery } from "@tanstack/react-query";
+import { lessonQueries, leaderboardQueries } from "../lib/queries";
 
 const HEARTS_MAX = 3;
 
@@ -19,17 +21,19 @@ export default function QuizScreen() {
   const { lessonId } = useParams();
   const navigate = useNavigate();
   const { stats, addXp, xpIntoCurrentLevel, xpForNextLevel } = useUserStats();
-
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [hearts, setHearts] = useState(HEARTS_MAX);
-  const [loading, setLoading] = useState(true);
   const [sessionXp, setSessionXp] = useState(0);
   const [correct, setCorrect] = useState(0);
   const [wrongQuestions, setWrongQuestions] = useState<Question[]>([]);
 
+  const { data: questions = [], isLoading: questionsLoading } = useQuery(
+    lessonQueries.questions(lessonId!),
+  );
+  const { data: leaderboard = [] } = useQuery(leaderboardQueries.all());
+
+  const loading = questionsLoading;
   const q = questions[current];
   const progress = (current / questions.length) * 100;
   const isAnswered = selected !== null;
@@ -89,30 +93,6 @@ export default function QuizScreen() {
       return "border-orange-300 bg-orange-50 cursor-default";
     return "border-gray-100 bg-white opacity-40 cursor-default";
   }
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    Promise.all([
-      fetch(`/api/questions?lessonId=${lessonId}`, {
-        signal: controller.signal,
-      }).then((r) => r.json()),
-      fetch("/api/leaderboard", { signal: controller.signal }).then((r) =>
-        r.json(),
-      ),
-    ])
-      .then(([qs, lb]) => {
-        const shuffled = [...qs].sort(() => Math.random() - 0.5);
-        setQuestions(shuffled);
-        setLeaderboard(lb);
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (err.name !== "AbortError") console.error(err);
-      });
-
-    return () => controller.abort();
-  }, [lessonId]);
 
   useEffect(() => {
     if (!questions.length) return;

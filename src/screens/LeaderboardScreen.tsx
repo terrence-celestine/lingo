@@ -1,21 +1,13 @@
-import { useEffect, useState } from "react";
 import { useUserStats } from "../context/UserStateContext";
-import type { LeaderboardEntry } from "../types";
 import Skeleton from "react-loading-skeleton";
+import { useQuery } from "@tanstack/react-query";
+import { leaderboardQueries } from "../lib/queries";
 
 export default function LeaderboardScreen() {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [loading, setLoading] = useState(true);
   const { stats } = useUserStats();
-
-  useEffect(() => {
-    fetch("/api/leaderboard")
-      .then((r) => r.json())
-      .then((data) => {
-        setLeaderboard(data);
-        setLoading(false);
-      });
-  }, []);
+  const { data: leaderboard = [], isLoading: loading } = useQuery(
+    leaderboardQueries.all(),
+  );
 
   const AVATAR_COLORS: Record<number, { bg: string; text: string }> = {
     0: { bg: "bg-amber-50", text: "text-amber-700" },

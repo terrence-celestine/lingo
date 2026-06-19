@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   BookOpen,
@@ -16,7 +15,8 @@ import {
 } from "lucide-react";
 import { useUserStats } from "../context/UserStateContext";
 import Skeleton from "react-loading-skeleton";
-import type { Lesson } from "../types";
+import { useQuery } from "@tanstack/react-query";
+import { lessonQueries } from "../lib/queries";
 
 const CATEGORY_COLORS: Record<
   string,
@@ -70,19 +70,11 @@ const CATEGORY_COLORS: Record<
 };
 
 export default function HomeScreen() {
-  const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: lessons = [], isLoading: loading } = useQuery(
+    lessonQueries.all(),
+  );
   const { completedLessons, isLessonUnlocked } = useUserStats();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetch("/api/lessons")
-      .then((r) => r.json())
-      .then((data) => {
-        setLessons(data);
-        setLoading(false);
-      });
-  }, []);
 
   function getGreeting() {
     const hour = new Date().getHours();
