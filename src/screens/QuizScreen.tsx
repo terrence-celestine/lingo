@@ -14,6 +14,7 @@ import type { Question } from "../types";
 import Skeleton from "react-loading-skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { lessonQueries, leaderboardQueries } from "../lib/queries";
+import ErrorState from "../components/ErrorState";
 
 const HEARTS_MAX = 3;
 
@@ -28,9 +29,12 @@ export default function QuizScreen() {
   const [correct, setCorrect] = useState(0);
   const [wrongQuestions, setWrongQuestions] = useState<Question[]>([]);
 
-  const { data: questions = [], isLoading: questionsLoading } = useQuery(
-    lessonQueries.questions(lessonId!),
-  );
+  const {
+    data: questions = [],
+    isLoading: questionsLoading,
+    isError,
+    refetch,
+  } = useQuery(lessonQueries.questions(lessonId!));
   const { data: leaderboard = [] } = useQuery(leaderboardQueries.all());
 
   const loading = questionsLoading;
@@ -151,6 +155,9 @@ export default function QuizScreen() {
         </div>
       </>
     );
+
+  if (isError)
+    return <ErrorState message="Couldn't load Lesson." onRetry={refetch} />;
 
   const heartsLeft = isAnswered && !isCorrect ? hearts - 1 : hearts;
 

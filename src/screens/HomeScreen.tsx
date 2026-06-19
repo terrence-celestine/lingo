@@ -17,6 +17,7 @@ import { useUserStats } from "../context/UserStateContext";
 import Skeleton from "react-loading-skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { lessonQueries } from "../lib/queries";
+import ErrorState from "../components/ErrorState";
 
 const CATEGORY_COLORS: Record<
   string,
@@ -70,9 +71,12 @@ const CATEGORY_COLORS: Record<
 };
 
 export default function HomeScreen() {
-  const { data: lessons = [], isLoading: loading } = useQuery(
-    lessonQueries.all(),
-  );
+  const {
+    data: lessons = [],
+    isLoading: loading,
+    isError,
+    refetch,
+  } = useQuery(lessonQueries.all());
   const { completedLessons, isLessonUnlocked } = useUserStats();
   const navigate = useNavigate();
 
@@ -82,6 +86,9 @@ export default function HomeScreen() {
     if (hour < 18) return "Good afternoon 👋";
     return "Good evening 👋";
   }
+
+  if (isError)
+    return <ErrorState message="Couldn't load lessons." onRetry={refetch} />;
 
   return (
     <div>

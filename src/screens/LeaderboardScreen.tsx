@@ -2,10 +2,11 @@ import { useUserStats } from "../context/UserStateContext";
 import Skeleton from "react-loading-skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { leaderboardQueries } from "../lib/queries";
+import ErrorState from "../components/ErrorState";
 
 export default function LeaderboardScreen() {
   const { stats } = useUserStats();
-  const { data: leaderboard = [], isLoading: loading } = useQuery(
+  const { data: leaderboard = [], isLoading: loading, isError, refetch} = useQuery(
     leaderboardQueries.all(),
   );
 
@@ -18,6 +19,9 @@ export default function LeaderboardScreen() {
   const medals = ["🥇", "🥈", "🥉"];
 
   const yourRank = leaderboard.filter((e) => e.xp > stats.xp).length + 1;
+
+  if (isError)
+    return <ErrorState message="Couldn't load leaderboard." onRetry={refetch} />;
 
   return (
     <>
