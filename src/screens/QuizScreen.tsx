@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { X, Volume2, ArrowRight, CheckCircle, XCircle } from "lucide-react";
+import {
+  X,
+  Volume2,
+  ArrowRight,
+  CheckCircle,
+  XCircle,
+  Heart,
+  Flame,
+} from "lucide-react";
 import { useUserStats } from "../context/UserStateContext";
 import type { Question, LeaderboardEntry } from "../types";
 import Skeleton from "react-loading-skeleton";
@@ -83,15 +91,27 @@ export default function QuizScreen() {
   }
 
   useEffect(() => {
+    const controller = new AbortController();
+
     Promise.all([
-      fetch(`/api/questions?lessonId=${lessonId}`).then((r) => r.json()),
-      fetch("/api/leaderboard").then((r) => r.json()),
-    ]).then(([qs, lb]) => {
-      const shuffled = [...qs].sort(() => Math.random() - 0.5);
-      setQuestions(shuffled);
-      setLeaderboard(lb);
-      setLoading(false);
-    });
+      fetch(`/api/questions?lessonId=${lessonId}`, {
+        signal: controller.signal,
+      }).then((r) => r.json()),
+      fetch("/api/leaderboard", { signal: controller.signal }).then((r) =>
+        r.json(),
+      ),
+    ])
+      .then(([qs, lb]) => {
+        const shuffled = [...qs].sort(() => Math.random() - 0.5);
+        setQuestions(shuffled);
+        setLeaderboard(lb);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") console.error(err);
+      });
+
+    return () => controller.abort();
   }, [lessonId]);
 
   useEffect(() => {
@@ -163,7 +183,7 @@ export default function QuizScreen() {
           <div className="flex items-center gap-3 mb-8">
             <button
               onClick={() => navigate("/")}
-              className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200 transition-colors shrink-0"
+              className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200 transition-colors shrink-0 cursor-pointer"
             >
               <X size={14} />
             </button>
@@ -179,7 +199,11 @@ export default function QuizScreen() {
                   key={i}
                   className={`text-base ${i < heartsLeft ? "text-red-400" : "text-gray-200"}`}
                 >
-                  ♥
+                  <Heart
+                    size={16}
+                    color={i < heartsLeft ? "red" : "gray"}
+                    fill={i < heartsLeft ? "red" : "gray"}
+                  />
                 </span>
               ))}
             </div>
@@ -196,7 +220,7 @@ export default function QuizScreen() {
             {q.hint && <p className="text-xs text-gray-300 mb-4">{q.hint}</p>}
             <button
               onClick={speak}
-              className="inline-flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-blue-500 text-xs font-medium px-4 py-2 rounded-full transition-colors"
+              className="inline-flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-blue-500 text-xs font-medium px-4 py-2 rounded-full transition-colors cursor-pointer"
             >
               <Volume2 size={13} /> Listen
             </button>
@@ -283,7 +307,7 @@ export default function QuizScreen() {
             </p>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { label: "Streak", value: `${stats.streak} 🔥` },
+                { label: "Streak", value: `${stats.streak}`, icon: Flame },
                 {
                   label: "Accuracy",
                   value:
@@ -292,12 +316,19 @@ export default function QuizScreen() {
                       : "—",
                 },
                 { label: "XP today", value: `+${sessionXp}` },
-                { label: "Hearts", value: `${heartsLeft} ♥` },
+                {
+                  label: "Hearts",
+                  value: `${heartsLeft}`,
+                  icon: Heart,
+                },
               ].map((s) => (
                 <div key={s.label} className="bg-[#F7F8FC] rounded-xl p-2.5">
                   <p className="text-xs text-gray-400 mb-0.5">{s.label}</p>
-                  <p className="text-base font-medium text-gray-900">
-                    {s.value}
+                  <p className="text-base font-medium text-gray-900 flex items-center gap-1">
+                    {s.value}{" "}
+                    <span>
+                      {s?.icon && <s.icon size={16} color="red" fill="red" />}
+                    </span>
                   </p>
                 </div>
               ))}

@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Zap, Trophy, TrendingUp, Languages, X, Check } from "lucide-react";
+import {
+  Zap,
+  Trophy,
+  TrendingUp,
+  Languages,
+  X,
+  Check,
+  Flame,
+} from "lucide-react";
 import { useUserStats } from "../context/UserStateContext";
 
 export default function TopNav() {
@@ -88,7 +96,7 @@ export default function TopNav() {
 
       <div className="flex items-center gap-2 ml-auto">
         <div className="flex items-center gap-1.5 bg-orange-50 text-orange-800 text-xs font-medium px-3 py-1.5 rounded-full">
-          {stats.streak} 🔥
+          {stats.streak} <Flame size={11} />
         </div>
         <div className="flex items-center gap-1.5 bg-amber-50 text-amber-800 text-xs font-medium px-3 py-1.5 rounded-full">
           <Zap size={11} />
@@ -100,7 +108,7 @@ export default function TopNav() {
             setNameInput(stats.displayName);
             setConfirmReset(false);
           }}
-          className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center border-2 border-blue-200 hover:border-blue-400 transition-colors text-base"
+          className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center border-2 border-blue-200 hover:border-blue-400 transition-colors text-base cursor-pointer"
         >
           {stats.avatar}
         </button>
@@ -117,7 +125,7 @@ export default function TopNav() {
             <p className="text-sm font-medium text-gray-900">Settings</p>
             <button
               onClick={() => setModalOpen(false)}
-              className="text-gray-300 hover:text-gray-500"
+              className="text-gray-300 hover:text-gray-500 cursor-pointer"
             >
               <X size={15} />
             </button>
@@ -130,7 +138,7 @@ export default function TopNav() {
                 <button
                   key={emoji}
                   onClick={() => updateAvatar(emoji)}
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-all
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-all cursor-pointer
           ${
             stats.avatar === emoji
               ? "bg-blue-100 border-2 border-blue-400 scale-110"
@@ -156,7 +164,7 @@ export default function TopNav() {
               />
               <button
                 onClick={handleSaveName}
-                className="w-9 h-9 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center justify-center transition-colors shrink-0"
+                className="w-9 h-9 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center justify-center transition-colors shrink-0 cursor-pointer"
               >
                 <Check size={14} />
               </button>
@@ -169,14 +177,19 @@ export default function TopNav() {
             <div className="grid grid-cols-3 gap-2">
               {[
                 { label: "XP", value: stats.xp.toLocaleString() },
-                { label: "Streak", value: `${stats.streak} 🔥` },
+                { label: "Streak", value: `${stats.streak}`, icon: Flame },
                 { label: "Level", value: stats.level },
               ].map((s) => (
                 <div
                   key={s.label}
                   className="bg-gray-50 rounded-xl p-2.5 text-center"
                 >
-                  <p className="text-sm font-medium text-gray-800">{s.value}</p>
+                  <p className="text-sm font-medium text-gray-800 flex items-center justify-center gap-1">
+                    {s.value}
+                    <span>
+                      {s?.icon && <s.icon size={16} color="red" fill="red" />}
+                    </span>
+                  </p>
                   <p className="text-xs text-gray-400">{s.label}</p>
                 </div>
               ))}
@@ -188,7 +201,7 @@ export default function TopNav() {
             <p className="text-xs text-gray-400 mb-2">Danger zone</p>
             <button
               onClick={handleReset}
-              className={`w-full py-2.5 rounded-xl text-sm font-medium transition-colors
+              className={`w-full py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer
                 ${
                   confirmReset
                     ? "bg-red-500 hover:bg-red-600 text-white"
