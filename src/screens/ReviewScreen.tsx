@@ -61,13 +61,10 @@ export default function ReviewScreen() {
                       {isCorrect ? (
                         <CheckCircle
                           size={15}
-                          className="text-teal-500 flex-shrink-0"
+                          className="text-teal-500 shrink-0"
                         />
                       ) : (
-                        <XCircle
-                          size={15}
-                          className="text-gray-300 flex-shrink-0"
-                        />
+                        <XCircle size={15} className="text-gray-300 shrink-0" />
                       )}
                       <span
                         className={

@@ -37,7 +37,7 @@ export default function LeaderboardScreen() {
 
         {/* Your rank card */}
         <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex items-center gap-4 mb-6">
-          <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 text-sm font-medium flex items-center justify-center flex-shrink-0 border-2 border-blue-200">
+          <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 text-sm font-medium flex items-center justify-center shrink-0 border-2 border-blue-200">
             TC
           </div>
           <div className="flex-1">
@@ -74,7 +74,7 @@ export default function LeaderboardScreen() {
                 className="flex items-center gap-4 px-5 py-4 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors"
               >
                 {/* Rank */}
-                <div className="w-8 text-center flex-shrink-0">
+                <div className="w-8 text-center shrink-0">
                   {i < 3 ? (
                     <span className="text-lg">{medals[i]}</span>
                   ) : (
@@ -86,7 +86,7 @@ export default function LeaderboardScreen() {
 
                 {/* Avatar */}
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium shrink-0
                   ${AVATAR_COLORS[i]?.bg ?? "bg-purple-50"} ${AVATAR_COLORS[i]?.text ?? "text-purple-700"}`}
                 >
                   {entry.name
@@ -106,7 +106,7 @@ export default function LeaderboardScreen() {
                 </div>
 
                 {/* XP */}
-                <div className="text-right flex-shrink-0">
+                <div className="text-right shrink-0">
                   <p className="text-sm font-medium text-gray-800">
                     {entry.xp.toLocaleString()}
                   </p>
@@ -117,12 +117,12 @@ export default function LeaderboardScreen() {
 
             {/* Your row at the bottom */}
             <div className="flex items-center gap-4 px-5 py-4 bg-blue-50 border-t border-blue-100">
-              <div className="w-8 text-center flex-shrink-0">
+              <div className="w-8 text-center shrink-0">
                 <span className="text-sm text-blue-500 font-medium">
                   #{yourRank}
                 </span>
               </div>
-              <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 text-sm font-medium flex items-center justify-center flex-shrink-0 border-2 border-blue-200">
+              <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 text-sm font-medium flex items-center justify-center shrink-0 border-2 border-blue-200">
                 TC
               </div>
               <div className="flex-1">
@@ -131,7 +131,7 @@ export default function LeaderboardScreen() {
                   {stats.streak} day streak 🔥
                 </p>
               </div>
-              <div className="text-right flex-shrink-0">
+              <div className="text-right shrink-0">
                 <p className="text-sm font-medium text-blue-700">
                   {stats.xp.toLocaleString()}
                 </p>

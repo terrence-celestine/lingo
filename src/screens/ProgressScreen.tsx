@@ -127,7 +127,7 @@ export default function ProgressScreen() {
               >
                 {/* Level badge */}
                 <div
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-medium flex-shrink-0
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-medium shrink-0
                 ${isCompleted ? "bg-amber-400 text-white" : isCurrent ? "bg-blue-100 text-blue-600" : "bg-gray-100 text-gray-400"}`}
                 >
                   {isCompleted ? "✓" : level}

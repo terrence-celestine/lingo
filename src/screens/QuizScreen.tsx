@@ -143,7 +143,7 @@ export default function QuizScreen() {
               ))}
             </div>
           </div>
-          <div className="w-52 flex-shrink-0 flex flex-col gap-5">
+          <div className="w-52 shrink-0 flex flex-col gap-5">
             <Skeleton height={160} borderRadius={16} />
             <Skeleton height={80} borderRadius={16} />
             <Skeleton height={180} borderRadius={16} />
@@ -163,7 +163,7 @@ export default function QuizScreen() {
           <div className="flex items-center gap-3 mb-8">
             <button
               onClick={() => navigate("/")}
-              className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200 transition-colors flex-shrink-0"
+              className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200 transition-colors shrink-0"
             >
               <X size={14} />
             </button>
@@ -173,7 +173,7 @@ export default function QuizScreen() {
                 style={{ width: `${Math.max(progress, 2)}%` }}
               />
             </div>
-            <div className="flex gap-1 flex-shrink-0">
+            <div className="flex gap-1 shrink-0">
               {Array.from({ length: HEARTS_MAX }).map((_, i) => (
                 <span
                   key={i}
@@ -211,7 +211,7 @@ export default function QuizScreen() {
                 className={`flex items-center gap-3 border-2 rounded-xl px-4 py-3 text-sm text-left transition-all ${getOptClass(i)}`}
               >
                 <span
-                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-medium flex-shrink-0
+                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-medium shrink-0
                   ${
                     isAnswered && i === q.correctIndex
                       ? "bg-teal-500 border-teal-500 text-white"
@@ -236,12 +236,12 @@ export default function QuizScreen() {
               {isCorrect ? (
                 <CheckCircle
                   size={17}
-                  className="text-teal-500 mt-0.5 flex-shrink-0"
+                  className="text-teal-500 mt-0.5 shrink-0"
                 />
               ) : (
                 <XCircle
                   size={17}
-                  className="text-orange-400 mt-0.5 flex-shrink-0"
+                  className="text-orange-400 mt-0.5 shrink-0"
                 />
               )}
               <div>
@@ -275,7 +275,7 @@ export default function QuizScreen() {
         </div>
 
         {/* Right panel */}
-        <div className="hidden md:flex w-52 flex-shrink-0 flex-col gap-5">
+        <div className="hidden md:flex w-52 shrink-0 flex-col gap-5">
           {/* Session stats */}
           <div className="bg-white rounded-2xl border border-gray-100 p-4">
             <p className="text-xs uppercase tracking-widest text-gray-300 mb-3">
@@ -339,7 +339,7 @@ export default function QuizScreen() {
                   <span className="text-xs text-gray-300 w-4 text-center">
                     {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1}
                   </span>
-                  <div className="w-6 h-6 rounded-full bg-blue-50 text-blue-600 text-xs font-medium flex items-center justify-center flex-shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-blue-50 text-blue-600 text-xs font-medium flex items-center justify-center shrink-0">
                     {entry.name
                       .split(" ")
                       .map((n) => n[0])
@@ -355,7 +355,7 @@ export default function QuizScreen() {
                 <span className="text-xs text-blue-500 w-4 text-center font-medium">
                   {leaderboard.length + 1}
                 </span>
-                <div className="w-6 h-6 rounded-full bg-blue-50 text-blue-600 text-xs font-medium flex items-center justify-center flex-shrink-0">
+                <div className="w-6 h-6 rounded-full bg-blue-50 text-blue-600 text-xs font-medium flex items-center justify-center shrink-0">
                   TC
                 </div>
                 <span className="text-xs text-blue-600 font-medium flex-1">

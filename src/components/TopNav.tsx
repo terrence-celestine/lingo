@@ -156,7 +156,7 @@ export default function TopNav() {
               />
               <button
                 onClick={handleSaveName}
-                className="w-9 h-9 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center justify-center transition-colors flex-shrink-0"
+                className="w-9 h-9 bg-blue-500 hover:bg-blue-600 text-white rounded-lg flex items-center justify-center transition-colors shrink-0"
               >
                 <Check size={14} />
               </button>
