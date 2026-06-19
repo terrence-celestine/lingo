@@ -71,6 +71,19 @@ const CATEGORY_COLORS: Record<
   },
 };
 
+const DIFFICULTY_BADGE: Record<
+  string,
+  { label: string; bg: string; text: string }
+> = {
+  Beginner: { label: "Beginner", bg: "bg-green-50", text: "text-green-600" },
+  Intermediate: {
+    label: "Intermediate",
+    bg: "bg-amber-50",
+    text: "text-amber-600",
+  },
+  Advanced: { label: "Advanced", bg: "bg-red-50", text: "text-red-500" },
+};
+
 export default function HomeScreen() {
   const {
     data: lessons = [],
@@ -175,6 +188,18 @@ export default function HomeScreen() {
                     >
                       {lesson.description}
                     </div>
+                    {(() => {
+                      const badge =
+                        DIFFICULTY_BADGE[lesson.difficulty] ??
+                        DIFFICULTY_BADGE["Beginner"];
+                      return (
+                        <div
+                          className={`mt-3 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${badge.bg} ${badge.text}`}
+                        >
+                          {badge.label}
+                        </div>
+                      );
+                    })()}
                     {unlocked && !completed && (
                       <div className="mt-4 flex items-center gap-1 text-xs text-blue-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                         Start lesson <ArrowRight size={12} />

@@ -19,6 +19,7 @@ async function seed() {
           "Learn how to say hello, goodbye, and ask how someone is doing.",
         category: "Basics",
         order: 1,
+        difficulty: "Beginner",
       },
       {
         title: "Numbers",
@@ -26,6 +27,7 @@ async function seed() {
           "Count from 1 to 20 and use numbers in everyday conversation.",
         category: "Basics",
         order: 2,
+        difficulty: "Beginner",
       },
       {
         title: "Food & Drink",
@@ -33,6 +35,7 @@ async function seed() {
           "Order at a restaurant and talk about your favorite foods.",
         category: "Daily Life",
         order: 3,
+        difficulty: "Beginner",
       },
     ])
     .returning();

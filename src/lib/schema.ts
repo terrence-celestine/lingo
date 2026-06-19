@@ -6,6 +6,7 @@ export const lessons = pgTable("lessons", {
   description: text("description").notNull(),
   category: text("category").notNull(),
   order: integer("order").notNull(),
+  difficulty: text("difficulty").notNull().default("Beginner"),
 });
 
 export const questions = pgTable("questions", {

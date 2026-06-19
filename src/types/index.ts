@@ -4,6 +4,7 @@ export interface Lesson {
   description: string;
   category: string;
   order: number;
+  difficulty: string;
 }
 
 export interface Question {
