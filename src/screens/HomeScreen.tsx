@@ -36,6 +36,13 @@ export default function HomeScreen() {
       });
   }, []);
 
+  function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning 👋";
+    if (hour < 18) return "Good afternoon 👋";
+    return "Good evening 👋";
+  }
+
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
       <TopNav stats={stats} />
@@ -43,7 +50,7 @@ export default function HomeScreen() {
       <main className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium text-gray-900">
-            Good morning 👋
+            {getGreeting()}
           </h1>
           <p className="text-sm text-gray-400 mt-1">
             Pick a lesson to continue your streak.

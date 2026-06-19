@@ -67,11 +67,13 @@ export default function QuizScreen() {
     const newHearts = isCorrect ? hearts : hearts - 1;
     const nextIndex = current + 1;
 
+    const newCorrect = isCorrect ? correct + 1 : correct;
+
     if (newHearts <= 0 || nextIndex >= questions.length) {
       navigate("/complete", {
         state: {
           sessionXp: sessionXp + xpGained,
-          correct: isCorrect ? correct : correct,
+          correct: newCorrect,
           total: questions.length,
           lessonId,
         },
@@ -80,6 +82,7 @@ export default function QuizScreen() {
     }
 
     setHearts(newHearts);
+    setCorrect(newCorrect);
     setSelected(null);
     setCurrent(nextIndex);
   }
