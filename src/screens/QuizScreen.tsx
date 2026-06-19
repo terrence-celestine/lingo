@@ -26,7 +26,8 @@ export default function QuizScreen() {
       fetch(`/api/questions?lessonId=${lessonId}`).then((r) => r.json()),
       fetch("/api/leaderboard").then((r) => r.json()),
     ]).then(([qs, lb]) => {
-      setQuestions(qs);
+      const shuffled = [...qs].sort(() => Math.random() - 0.5);
+      setQuestions(shuffled);
       setLeaderboard(lb);
       setLoading(false);
     });
@@ -67,13 +68,11 @@ export default function QuizScreen() {
     const newHearts = isCorrect ? hearts : hearts - 1;
     const nextIndex = current + 1;
 
-    const newCorrect = isCorrect ? correct + 1 : correct;
-
     if (newHearts <= 0 || nextIndex >= questions.length) {
       navigate("/complete", {
         state: {
           sessionXp: sessionXp + xpGained,
-          correct: newCorrect,
+          correct,
           total: questions.length,
           lessonId,
         },
@@ -82,7 +81,6 @@ export default function QuizScreen() {
     }
 
     setHearts(newHearts);
-    setCorrect(newCorrect);
     setSelected(null);
     setCurrent(nextIndex);
   }
@@ -183,8 +181,8 @@ export default function QuizScreen() {
           {/* Feedback */}
           {isAnswered && (
             <div
-              className={`rounded-xl border-2 px-4 py-3 flex items-start gap-3 mb-4
-              ${isCorrect ? "bg-teal-50 border-teal-300" : "bg-orange-50 border-orange-300"}`}
+              className={`rounded-xl border-2 px-4 py-3 flex items-start gap-3 mb-4 animate-bounce-in
+    ${isCorrect ? "bg-teal-50 border-teal-300" : "bg-orange-50 border-orange-300"}`}
             >
               {isCorrect ? (
                 <CheckCircle

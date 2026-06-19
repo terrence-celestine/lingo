@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Zap, Trophy, TrendingUp, Languages } from "lucide-react";
 import type { UserStats } from "../types";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   stats: UserStats;
@@ -8,6 +9,16 @@ interface Props {
 
 export default function TopNav({ stats }: Props) {
   const location = useLocation();
+  const prevXp = useRef(stats.xp);
+  const [bump, setBump] = useState(false);
+
+  useEffect(() => {
+    if (stats.xp !== prevXp.current) {
+      setBump(true);
+      prevXp.current = stats.xp;
+      setTimeout(() => setBump(false), 600);
+    }
+  }, [stats.xp]);
 
   const links = [
     { to: "/", label: "Learn", icon: Zap },
@@ -46,7 +57,10 @@ export default function TopNav({ stats }: Props) {
         <div className="flex items-center gap-1.5 bg-orange-50 text-orange-800 text-xs font-medium px-3 py-1.5 rounded-full">
           {stats.streak} 🔥
         </div>
-        <div className="flex items-center gap-1.5 bg-amber-50 text-amber-800 text-xs font-medium px-3 py-1.5 rounded-full">
+        <div
+          className={`flex items-center gap-1.5 bg-amber-50 text-amber-800 text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-300
+  ${bump ? "scale-125 bg-amber-200" : "scale-100"}`}
+        >
           <Zap size={11} />
           {stats.xp} XP
         </div>
